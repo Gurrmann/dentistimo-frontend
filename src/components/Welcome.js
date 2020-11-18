@@ -3,8 +3,9 @@ import '../css/Welcome.css';
 
 function Welcome() {
     return (
-      <h1> Dentistimo </h1>
-
+      <div>
+      <h1>Welcome to Dentistimo </h1>
+      </div>
     )
 }
 export default Welcome;
