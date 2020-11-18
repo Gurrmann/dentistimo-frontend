@@ -1,10 +1,11 @@
-
+import React from 'react';
+import Welcome from './Welcome.js'
 
 function FrontPage() {
     return (
 
       <div>
-        <h1>Welcome to Dentisimo!</h1>
+        <Welcome />
       </div>
 
     )
