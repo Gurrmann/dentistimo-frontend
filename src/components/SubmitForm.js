@@ -5,12 +5,16 @@ function SubmitForm () {
     return(
         <div>
             <form>
-                <label>Name:<input type="text" name="name" placeholder = 'Name'/></label><br/>
-                <label>Phone number:<input type="text" phoneNumber="phone" placeholder = 'Phone number'/></label><br/>
-                <label>Email:<input type="text" eMail="mail" placeholder = 'Email' /></label><br/>
-                <label>ssn:<input type="text" ssn="ssn" placeholder = 'SSN'/></label><br/>
+                <label>Name:</label><br/>
+                <input type="text" name="name" placeholder = 'Name Namerson'/><br/>
+                <label>Phone number:</label><br/>
+                <input type="text" phoneNumber="phone" placeholder = '0713333337'/><br/>
+                <label>Email:</label><br/>
+                <input type="text" eMail="mail" placeholder = 'youremail@domain.gov' /><br/>
                 <label>Time:</label><br/>
-                <label>Selected Dentistry:</label><br/>
+                (Selected Time Slot Goes Here)<br/>
+                <label>Dentistry:</label><br/>
+                (Selected Dentistry Goes Here)<br/>
                 <input type="submit" value="Submit" />
             </form>
         </div>
