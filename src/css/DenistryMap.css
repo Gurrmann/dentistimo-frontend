@@ -1,0 +1,8 @@
+#mapPosition {
+  position: relative;
+  left: 900px;
+  bottom: 500px;
+  background-color: yellow;
+  width: 600px;
+  height: 500px
+}
