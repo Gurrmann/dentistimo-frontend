@@ -8,3 +8,8 @@ label {
 form {
     color: white;
 }
+#position {
+  position: fixed;
+  top: 59px;
+  left: 330px;
+}

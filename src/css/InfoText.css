@@ -5,10 +5,15 @@
   text-align: center;
   margin: 0px;
   background-color: #2e9692
-
 }
 
 #textBlock {
   color: white;
-  font-size: 22px;
+  font-size: 18px;
+  margin: -1px;
+  padding: 10px;
+  width: 300px;
+  text-align: center;
+  position: fixed;
+  top: 60px
 }
