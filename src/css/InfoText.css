@@ -1,9 +1,11 @@
 #infoText {
   color: white;
   font-family: monospace;
-  font-size: 34px;
+  font-size: 40px;
   text-align: center;
   margin: 0px;
+  padding: 15px;
+  height: 55px;
   background-color: #2e9692
 }
 
@@ -13,7 +15,8 @@
   margin: -1px;
   padding: 10px;
   width: 300px;
-  text-align: center;
+  text-align: left;
   position: fixed;
-  top: 60px
+  top: 500px;
+  left: 310px;
 }

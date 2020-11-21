@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/InfoText.css';
 
 function InfoText() {
-  const banner = 'Welcome to Dentistimo'
+  const banner = 'Dentistimo'
     return (
       <div>
         <h1 id='infoText'>{banner}</h1>
