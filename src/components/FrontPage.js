@@ -1,12 +1,12 @@
 import React from 'react';
 import InfoText from './InfoText.js'
 import SubmitForm from './SubmitForm.js'
+import '../css/FrontPage.css'
 
 function FrontPage() {
     return (
-
-      <div style={{backgroundColor: '#292a35'}}>
-        <InfoText />
+      <div >
+        <InfoText className='background' />
         <SubmitForm />
       </div>
 

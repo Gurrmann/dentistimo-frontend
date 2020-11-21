@@ -3,7 +3,7 @@ import '../css/SubmitForm.css';
 
 function SubmitForm () {
     return(
-        <div>
+        <div id='position'>
             <form>
                 <label>Name:</label><br/>
                 <input type="text" name="name" placeholder = 'Name Namerson'/><br/>

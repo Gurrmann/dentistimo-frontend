@@ -14,9 +14,7 @@ function InfoText() {
 const TextBlock = () => {
   const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then fill in your info and submit'
   return (
-    <div >
       <p id='textBlock'>{textBlock}</p>
-    </div>
   )
 }
 export default InfoText;
