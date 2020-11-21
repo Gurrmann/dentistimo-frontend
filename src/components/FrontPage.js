@@ -5,7 +5,7 @@ import SubmitForm from './SubmitForm.js'
 function FrontPage() {
     return (
 
-      <div>
+      <div style={{backgroundColor: '#292a35'}}>
         <InfoText />
         <SubmitForm />
       </div>

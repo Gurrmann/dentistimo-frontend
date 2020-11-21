@@ -4,6 +4,7 @@ h1 {
   text-align: center;
 }
 
-* {
-  background-color: #353532
+#infoText {
+  background-color: #2e9692;
+  margin: -16px;
 }

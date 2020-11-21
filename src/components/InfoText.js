@@ -3,7 +3,7 @@ import '../css/InfoText.css';
 
 function InfoText() {
     return (
-      <div>
+      <div id='infoText'>
       <h1>Welcome to Dentistimo </h1>
       </div>
     )
