@@ -9,7 +9,7 @@ form {
     color: white;
 }
 #position {
-  position: fixed;
-  top: 600px;
+  position: relative;
+  top: 370px;
   left: 330px;
 }

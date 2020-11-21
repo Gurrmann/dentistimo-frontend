@@ -34,7 +34,7 @@ class SubmitForm extends Component {
     }
     render() {
         return(
-            <div>
+            <div id='position'>
                 <form onSubmit={this.handleSubmit}>
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
