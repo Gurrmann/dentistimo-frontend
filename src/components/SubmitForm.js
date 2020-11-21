@@ -7,22 +7,22 @@ function SubmitForm () {
             <form>
                 <label>
                     Name:
-                    <input type="text" name="name"/>
+                    <input type="text" name="name" placeholder = 'Name'/>
                 </label>
                 <br/>
                 <label>
                     Phone number:
-                    <input type="text" phoneNumber="phone" />
+                    <input type="text" phoneNumber="phone" placeholder = 'Phone number'/>
                 </label>
                 <br/>
                 <label>
                     Email:
-                    <input type="text" eMail="mail" />
+                    <input type="text" eMail="mail" placeholder = 'Email' />
                 </label>
                 <br/>
                 <label>
-                    Ssn:
-                    <input type="text" ssn="ssn" />
+                    ssn:
+                    <input type="text" ssn="ssn" placeholder = 'SSN'/>
                 </label>
                 <br/>
                 <label>
