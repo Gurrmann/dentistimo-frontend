@@ -1,3 +1,46 @@
 * {
   background-color: #292a35;
 }
+
+.submission-map-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 12%;
+  margin-right: 12%;
+}
+
+.submit-form {
+  flex: 1;
+  border-style: solid;
+  border-color: white;
+  margin-right: 100px;
+  width: 300px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-color: white;
+  margin-top: 3%;
+  margin-left: 12%;
+  margin-right: 64%;
+  margin-bottom: 50px;
+}
+
+.map {
+  flex: 2;
+  border-style: solid;
+  border-color: white;
+}
+
+#infoText {
+  color: white;
+  font-family: monospace;
+  font-size: 40px;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  background-color: #2e9692;
+}
