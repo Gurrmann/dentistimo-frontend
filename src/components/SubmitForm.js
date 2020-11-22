@@ -35,6 +35,7 @@ class SubmitForm extends Component {
     render() {
         return(
             <div id='position'>
+              <TextBlock />
                 <form onSubmit={this.handleSubmit}>
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
@@ -51,5 +52,11 @@ class SubmitForm extends Component {
             </div>
         )
     }
+}
+const TextBlock = () => {
+  const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then fill in your info and submit'
+  return (
+      <p id='textBlock'>{textBlock}</p>
+  )
 }
 export default SubmitForm;
