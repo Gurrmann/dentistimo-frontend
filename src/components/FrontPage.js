@@ -3,11 +3,13 @@ import SubmitForm from './SubmitForm.js'
 import Calendar from './Calendar.js'
 import DenistryMap from './DenistryMap.js'
 import '../css/FrontPage.css'
+import SidePanel from './SidePanel.js'
 
 function FrontPage() {
     return (
       <>
         <InfoText />
+        <SidePanel />
       <div className='calendar'>
         <Calendar />
       </div>

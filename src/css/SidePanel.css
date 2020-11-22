@@ -1,0 +1,7 @@
+.side-panel {
+  width: 30rem;
+  height: 100vh;
+  position: fixed;
+  border-style: solid;
+  border-color: white;
+}
