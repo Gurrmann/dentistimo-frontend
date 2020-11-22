@@ -8,17 +8,17 @@ function FrontPage() {
     return (
       <>
         <InfoText />
-      <div className='container-1'>
-        <div className='box-2'>
+      <div className='calendar'>
+        <Calendar />
+      </div>
+      <div className='submission-map-container'>
+        <div className='submit-form'>
           <SubmitForm/>
         </div>
-        <div className='box-4'>
+        <div className='map'>
           <DenistryMap />
         </div>
       </div>
-        <div className='box-3'>
-          <Calendar />
-        </div>
       </>
 
 

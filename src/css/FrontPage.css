@@ -2,34 +2,37 @@
   background-color: #292a35;
 }
 
-.container-1 {
+.submission-map-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 12%
+  margin-left: 12%;
+  margin-right: 12%;
 }
 
-.box-1 {
-  flex: 1;
-  border-style: solid
-}
-.box-2 {
+.submit-form {
   flex: 1;
   border-style: solid;
+  border-color: white;
   margin-right: 100px;
   width: 300px;
 }
 
-.box-3 {
+.calendar {
   display: flex;
   flex-direction: row;
   border-style: solid;
+  border-color: white;
+  margin-top: 3%;
+  margin-left: 12%;
+  margin-right: 64%;
+  margin-bottom: 50px;
 }
 
-.box-4 {
+.map {
   flex: 2;
   border-style: solid;
-  margin-right: 12%
+  border-color: white;
 }
 
 #infoText {
