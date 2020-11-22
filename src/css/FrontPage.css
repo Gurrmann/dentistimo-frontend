@@ -1,3 +1,7 @@
 * {
   background-color: #292a35;
 }
+
+.container-1 {
+  display: flex;
+}

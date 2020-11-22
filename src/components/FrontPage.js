@@ -7,8 +7,8 @@ import '../css/FrontPage.css'
 
 function FrontPage() {
     return (
-      <div >
-        <InfoText className='background' />
+      <div className='container-1'>
+        <InfoText />
         <SubmitForm />
         <Calendar />
         <DenistryMap />
