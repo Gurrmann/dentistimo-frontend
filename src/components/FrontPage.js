@@ -4,6 +4,7 @@ import Calendar from './Calendar.js'
 import DenistryMap from './DenistryMap.js'
 import '../css/FrontPage.css'
 import SidePanel from './SidePanel.js'
+import MapBox from './Mapbox.js'
 
 function FrontPage() {
     return (
@@ -20,6 +21,9 @@ function FrontPage() {
         <div className='map'>
           <DenistryMap />
         </div>
+        <div className='mapBox'>
+          <MapBox />
+          </div>
       </div>
       </>
 
