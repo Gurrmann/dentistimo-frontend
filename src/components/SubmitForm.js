@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../css/SubmitForm.css';
+var mqtt = require('mqtt');
+var client = mqtt.connect('mqtt://test.mosquitto.org');
 
 class SubmitForm extends Component {
     constructor(props){
@@ -28,9 +30,15 @@ class SubmitForm extends Component {
             eMail: event.target.value
         })
     }
+    handleChange = (event) => {
+        this.setState({value: event.target.value});
+    }
     handleSubmit = (event) => {
         alert(`${this.state.name} ${this.state.phoneNumber} ${this.state.eMail} ${this.state.timeSlot} ${this.state.dentistry}`)
+        client.publish('dentistry', '{"msg": "Hello Backend"}')
         event.preventDefault()
+        /* client.publish('dentistry', '{"msg": "Hello Backend"}')
+        client.on() */
     }
     render() {
         return(
@@ -46,7 +54,11 @@ class SubmitForm extends Component {
                     <label>Time:</label><br/>
                     {this.state.timeSlot}<br/>
                     <label>Dentistry:</label><br/>
-                    {this.state.dentistry}<br/>
+                    <select value= {this.state.dentistry} onChange={this.handleChange}>
+                        <option default>Select your dentistry</option>
+                        <option value="noSelection">-------</option>
+                    </select>
+                    <br/>
                     <input type="submit" value="Submit" />
                 </form>
             </div>
