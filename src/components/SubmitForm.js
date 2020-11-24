@@ -48,11 +48,14 @@ class SubmitForm extends Component {
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
                     <label>Phone number:</label><br/>
-                    <input type="text" value={this.state.phoneNumber} placeholder = '0713333337' onChange={this.handlePhoneNumberChange}/><br/>
+                    <input type="text" value={this.state.phoneNumber} placeholder = '0712345678' onChange={this.handlePhoneNumberChange}/><br/>
                     <label>Email:</label><br/>
                     <input type="text" value={this.state.eMail} placeholder = 'youremail@domain.gov' onChange={this.handleEMailChange} /><br/>
                     <label>Time:</label><br/>
-                    {this.state.timeSlot}<br/>
+                    <select value= {this.state.timeSlot} onChange={this.handleChange}>
+                        <option default>Select a time slot</option>
+                        <option value="noSelection">-------</option>
+                    </select><br/>
                     <label>Dentistry:</label><br/>
                     <select value= {this.state.dentistry} onChange={this.handleChange}>
                         <option default>Select your dentistry</option>
