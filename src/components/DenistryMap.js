@@ -1,6 +1,7 @@
 import React from 'react';
 /*import ReactDOM from 'react-dom'; */
 import mapboxgl from 'mapbox-gl';
+import '../css/DenistryMap.css'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg';
 
@@ -9,9 +10,9 @@ class DenistryMap extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          lng: 5,
-          lat: 34,
-          zoom: 2 
+          lng: 11.974560,
+          lat: 57.708870,
+          zoom: 11
         };
       }
       // this function will be invoked right after the app 
@@ -65,5 +66,4 @@ export default function DenistryMap({ coordinates }) {
     );
 } */
 
-    
    
