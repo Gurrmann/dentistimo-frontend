@@ -1,9 +1,9 @@
 .mapContainer {
   position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+  top: 160px;
+  right: 153px;
+  left: 540px;
+  bottom: 467px;
 }
 
 .sidebarStyle {
@@ -22,3 +22,4 @@
 /*#mapPosition {
   background-color: yellow;
 } */
+
