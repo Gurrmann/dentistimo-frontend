@@ -11,7 +11,7 @@
 }
 
 .submit-form {
-  flex: 1;
+  display: flex;
   border-style: solid;
   border-color: white;
   margin-right: 100px;
@@ -27,12 +27,6 @@
   margin-left: 12%;
   margin-right: 64%;
   margin-bottom: 50px;
-}
-
-.map {
-  flex: 2;
-  border-style: solid;
-  border-color: white;
 }
 
 #infoText {
