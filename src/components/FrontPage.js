@@ -16,7 +16,7 @@ function FrontPage() {
       </div>      
       <div className='submission-map-container'>        
         <div className='submit-form'>          
-        <SubmitForm/>        
+        <SubmitForm />        
       </div>        
       <div className='map'>          
         <DenistryMap />        
