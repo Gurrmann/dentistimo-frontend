@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+/*import ReactDOM from 'react-dom'; */
 import mapboxgl from 'mapbox-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg';
@@ -47,7 +47,7 @@ class DenistryMap extends React.Component {
       }
   }
   
-  ReactDOM.render(<DenistryMap />, document.getElementById('app'));
+
 
   export default DenistryMap
 
