@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import '../css/SubmitForm.css';
-var mqtt = require('mqtt');
-var client = mqtt.connect('mqtt://test.mosquitto.org');
 const dentistryOptions = [
     {value: 'Dentistry 1', label: 'Dentistry 1'},
     {value: 'Dentistry 2', label: 'Dentistry 2'},
@@ -39,8 +37,13 @@ class SubmitForm extends Component {
             eMail: event.target.value
         })
     }
-    handleOptionChange = (event) => {
-        this.setState({value: event.target.value});
+    handleDentistryChange = (event) => {
+        this.setState({
+            dentistry: event.target.value
+        });
+    }
+    handleTimeChange = (event) => {
+
     }
     handleFormChange = ({ target }) => {
         this.setState({
@@ -49,16 +52,9 @@ class SubmitForm extends Component {
     }
     handleSubmit = (event) => {
         alert(`${this.state.name} ${this.state.phoneNumber} ${this.state.eMail} ${this.state.timeSlot} ${this.state.dentistry}`)
-        client.publish('dentistry', '{"msg": "Hello Backend"}')
         event.preventDefault()
         /* client.publish('dentistry', '{"msg": "Hello Backend"}')
         client.on() */
-    }
-    optionOutput = (event) => {
-        var options = ['1', '2', '3'];
-        for (let index = 0; index < options.length; index++) {
-            return (options[index]);
-        }
     }
     render() {
         return(
@@ -77,7 +73,7 @@ class SubmitForm extends Component {
                         <option value="noSelection">-------</option>
                     </select><br/>
                     <label>Dentistry:</label><br/>
-                    <select value= {this.handleFormChange} onChange={this.handleOptionChange}>
+                    <select value= {this.state.selectedOption} onChange={this.handleFormChange, this.handleDentistryChange}>
                         <option placeholder>Select your dentistry</option>
                         <option>-------</option>
                         {dentistryOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
