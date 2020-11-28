@@ -3,13 +3,19 @@ import '../css/SubmitForm.css';
 const dentistryOptions = [
     {value: 'Dentistry 1', label: 'Dentistry 1'},
     {value: 'Dentistry 2', label: 'Dentistry 2'},
-    {value: 'Dentistry 3', label: 'Dentistry 3'}
+    {value: 'Dentistry 3', label: 'Dentistry 3'},
 
 ];
+const timeOptions = [
+    {value: '10:00', label: '10:00'},
+    {value: '12:00', label: '12:00'},
+    {value: '15:00', label: '15:00'},
+]
 
 class SubmitForm extends Component {
     state = {
-        selectedOption: 'None',
+        selectedDentistryOption: 'None',
+        selectedTimeOption: 'None'
     }
     constructor(props){
         super(props)
@@ -43,11 +49,18 @@ class SubmitForm extends Component {
         });
     }
     handleTimeChange = (event) => {
-
-    }
-    handleFormChange = ({ target }) => {
         this.setState({
-            selectedOption: target.value,
+            timeSlot: event.target.value
+        })
+    }
+    handleDentistryOptionChange = ({ target }) => {
+        this.setState({
+            selectedDentistryOption: target.value,
+        })
+    }
+    handleTimeOptionChange = ({ target }) => {
+        this.setState({
+            selectedTimeOption: target.value,
         })
     }
     handleSubmit = (event) => {
@@ -68,14 +81,13 @@ class SubmitForm extends Component {
                     <label>Email:</label><br/>
                     <input type="text" value={this.state.eMail} placeholder = 'youremail@domain.gov' onChange={this.handleEMailChange} /><br/>
                     <label>Time:</label><br/>
-                    <select value= {this.state.timeSlot} onChange={this.handleOptionChange}>
+                    <select value= {this.state.selectedTimeOption} onChange={this.handleTimeOptionChange, this.handleTimeChange}>
                         <option default>Select a time slot</option>
-                        <option value="noSelection">-------</option>
+                        {timeOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
                     </select><br/>
                     <label>Dentistry:</label><br/>
-                    <select value= {this.state.selectedOption} onChange={this.handleFormChange, this.handleDentistryChange}>
-                        <option placeholder>Select your dentistry</option>
-                        <option>-------</option>
+                    <select value= {this.state.selectedDentistryOption} onChange={this.handleDentistryOptionChange, this.handleDentistryChange}>
+                        <option default>Select your dentistry</option>
                         {dentistryOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
                                            
                     </select>
