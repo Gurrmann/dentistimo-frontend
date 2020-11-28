@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import '../css/SubmitForm.css';
 var mqtt = require('mqtt');
 var client = mqtt.connect('mqtt://test.mosquitto.org');
+const dentistryOptions = [
+    {value: 'Dentistry 1', label: 'Dentistry 1'},
+    {value: 'Dentistry 2', label: 'Dentistry 2'},
+    {value: 'Dentistry 3', label: 'Dentistry 3'}
+
+];
 
 class SubmitForm extends Component {
+    state = {
+        selectedOption: 'None',
+    }
     constructor(props){
         super(props)
 
@@ -30,8 +39,13 @@ class SubmitForm extends Component {
             eMail: event.target.value
         })
     }
-    handleChange = (event) => {
+    handleOptionChange = (event) => {
         this.setState({value: event.target.value});
+    }
+    handleFormChange = ({ target }) => {
+        this.setState({
+            selectedOption: target.value,
+        })
     }
     handleSubmit = (event) => {
         alert(`${this.state.name} ${this.state.phoneNumber} ${this.state.eMail} ${this.state.timeSlot} ${this.state.dentistry}`)
@@ -39,6 +53,12 @@ class SubmitForm extends Component {
         event.preventDefault()
         /* client.publish('dentistry', '{"msg": "Hello Backend"}')
         client.on() */
+    }
+    optionOutput = (event) => {
+        var options = ['1', '2', '3'];
+        for (let index = 0; index < options.length; index++) {
+            return (options[index]);
+        }
     }
     render() {
         return(
@@ -52,14 +72,16 @@ class SubmitForm extends Component {
                     <label>Email:</label><br/>
                     <input type="text" value={this.state.eMail} placeholder = 'youremail@domain.gov' onChange={this.handleEMailChange} /><br/>
                     <label>Time:</label><br/>
-                    <select value= {this.state.timeSlot} onChange={this.handleChange}>
+                    <select value= {this.state.timeSlot} onChange={this.handleOptionChange}>
                         <option default>Select a time slot</option>
                         <option value="noSelection">-------</option>
                     </select><br/>
                     <label>Dentistry:</label><br/>
-                    <select value= {this.state.dentistry} onChange={this.handleChange}>
-                        <option default>Select your dentistry</option>
-                        <option value="noSelection">-------</option>
+                    <select value= {this.handleFormChange} onChange={this.handleOptionChange}>
+                        <option placeholder>Select your dentistry</option>
+                        <option>-------</option>
+                        {dentistryOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
+                                           
                     </select>
                     <br/>
                     <input type="submit" value="Submit" />
