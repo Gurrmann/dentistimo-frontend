@@ -1,21 +1,9 @@
 import React, { Component } from 'react';
 import '../css/SubmitForm.css';
-const dentistryOptions = [
-    {value: 'Dentistry 1', label: 'Dentistry 1'},
-    {value: 'Dentistry 2', label: 'Dentistry 2'},
-    {value: 'Dentistry 3', label: 'Dentistry 3'},
-
-];
-const timeOptions = [
-    {value: '10:00', label: '10:00'},
-    {value: '12:00', label: '12:00'},
-    {value: '15:00', label: '15:00'},
-]
 
 class SubmitForm extends Component {
     state = {
-        selectedDentistryOption: 'None',
-        selectedTimeOption: 'None'
+        selectedOption: 'None',
     }
     constructor(props){
         super(props)
@@ -43,36 +31,45 @@ class SubmitForm extends Component {
             eMail: event.target.value
         })
     }
-    handleDentistryChange = (event) => {
-        this.setState({
-            dentistry: event.target.value
-        });
+    handleOptionChange = (event) => {
+        this.setState({dentistry: event.target.value});
+        console.log(event.target.value)
     }
-    handleTimeChange = (event) => {
+    handleFormChange = ({ target }) => {
         this.setState({
-            timeSlot: event.target.value
-        })
-    }
-    handleDentistryOptionChange = ({ target }) => {
-        this.setState({
-            selectedDentistryOption: target.value,
-        })
-    }
-    handleTimeOptionChange = ({ target }) => {
-        this.setState({
-            selectedTimeOption: target.value,
+            dentistry: target.value,
         })
     }
     handleSubmit = (event) => {
         alert(`${this.state.name} ${this.state.phoneNumber} ${this.state.eMail} ${this.state.timeSlot} ${this.state.dentistry}`)
+        client.publish('dentistry', '{"msg": "Hello Backend"}')
         event.preventDefault()
         /* client.publish('dentistry', '{"msg": "Hello Backend"}')
         client.on() */
     }
+    optionOutput = (event) => {
+        var options = ['1', '2', '3'];
+        for (let index = 0; index < options.length; index++) {
+            return (options[index]);
+        }
+    }
+    
     render() {
+
+        
+        var dentistArr = []
+
+ //The data from frontpage is sent after the webpage has loaded, so we check if it has been sent, if it has not we have an empty array
+ // drop down options for timetable, not working {dentistArr.map(({monday, id}, index) => <option key={id} id ={id} >{monday}</option>)}
+        if (this.props.dentistryarr.length) {
+            for (var i = 0; i < this.props.dentistryarr.length; i++){
+            dentistArr.push(this.props.dentistryarr[i])
+        }
+    }
+
         return(
             <div id='position'>
-              <TextBlock />
+              <TextBlock /> 
                 <form onSubmit={this.handleSubmit}>
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
@@ -80,16 +77,17 @@ class SubmitForm extends Component {
                     <input type="text" value={this.state.phoneNumber} placeholder = '0712345678' onChange={this.handlePhoneNumberChange}/><br/>
                     <label>Email:</label><br/>
                     <input type="text" value={this.state.eMail} placeholder = 'youremail@domain.gov' onChange={this.handleEMailChange} /><br/>
-                    <label>Time:</label><br/>
-                    <select value= {this.state.selectedTimeOption} onChange={this.handleTimeOptionChange, this.handleTimeChange}>
+                     <label>Time:</label><br/>
+                    <select value= {this.state.timeSlot} onChange={this.handleOptionChange}>
                         <option default>Select a time slot</option>
-                        {timeOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
+                        <option value="noSelection">-------</option>
+                       
                     </select><br/>
                     <label>Dentistry:</label><br/>
-                    <select value= {this.state.selectedDentistryOption} onChange={this.handleDentistryOptionChange, this.handleDentistryChange}>
+                    <select value= {this.state.dentistry} onChange={this.handleOptionChange}>
                         <option default>Select your dentistry</option>
-                        {dentistryOptions.map(({value, label}, index) => <option value={value} >{label}</option>)}
-                                           
+                        <option>-------</option>
+                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}             
                     </select>
                     <br/>
                     <input type="submit" value="Submit" />
@@ -104,4 +102,5 @@ const TextBlock = () => {
       <p id='textBlock'>{textBlock}</p>
   )
 }
+
 export default SubmitForm;
