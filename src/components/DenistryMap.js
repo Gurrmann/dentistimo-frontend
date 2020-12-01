@@ -12,7 +12,7 @@ class DenistryMap extends React.Component {
         this.state = {
           lng: 11.974560,
           lat: 57.708870,
-          zoom: 11
+          zoom: 11.5
         };
       }
       // this function will be invoked right after the app 
@@ -24,6 +24,23 @@ class DenistryMap extends React.Component {
           center: [this.state.lng, this.state.lat],
           zoom: this.state.zoom
         });
+
+        // eslint-disable-next-line
+        var YourDentist = new mapboxgl.Marker()
+        .setLngLat([11.969388, 57.707619])
+        .addTo(map);
+
+        // eslint-disable-next-line
+        var ToothFairyDentist = new mapboxgl.Marker()
+        .setLngLat([11.942625, 57.685255])
+        .addTo(map);
+
+        // eslint-disable-next-line
+        var TheCrown = new mapboxgl.Marker()
+        .setLngLat([11.940386, 57.709872])
+        .addTo(map);
+
+        map.addControl(new mapboxgl.NavigationControl());
 
         map.on('move', () => {
             this.setState({

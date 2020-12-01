@@ -21,7 +21,7 @@ function FrontPage() {
       <div className='map'>          
         <DenistryMap />        
         </div>      
-      </div>      
+      </div>
       </>
 
 
