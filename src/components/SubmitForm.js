@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
 
 var timeSlotArr = []
@@ -114,7 +116,8 @@ class SubmitForm extends Component {
         }
         return(
             <div id='position'>
-              <TextBlock /> 
+              <TextBlock/>
+              <row><Calendar/></row>
                 <form onSubmit={this.handleSubmit}>
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
