@@ -42,9 +42,6 @@ function FrontPage() {
       <>
         <InfoText />
         <SidePanel />
-      <div className='calendar'>
-        <Calendar />
-      </div>
       <div className='submission-map-container'>
         <div className='submit-form'>
           <SubmitForm dentistryarr={mesg} /> 
