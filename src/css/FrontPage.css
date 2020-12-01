@@ -1,7 +1,7 @@
-* {
-  background-color: #292a35;
-}
 
+.background {
+  background-color: #404040;
+}
 .submission-map-container {
   display: flex;
   flex-direction: row;
