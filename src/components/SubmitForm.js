@@ -117,7 +117,7 @@ class SubmitForm extends Component {
         return(
             <div id='position'>
               <TextBlock/>
-              <row><Calendar/></row>
+              <div><Calendar/></div>
                 <form onSubmit={this.handleSubmit}>
                     <label>Name:</label><br/>
                     <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
