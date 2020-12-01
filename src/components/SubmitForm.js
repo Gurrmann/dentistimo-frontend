@@ -101,16 +101,17 @@ class SubmitForm extends Component {
         return(
             <div id='position'>
               <TextBlock/>
+              <label>Select a date:</label><br/>
               <div><Calendar/></div>
                 <form onSubmit={this.handleSubmit}>
                     <label>Select a time</label><br/>
                     <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
-                        <option default disabled >Select a time slot</option>
+                        <option default disabled>Select a time slot</option>
                         {timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
                     </select><br/>
                     <label>Select a dentistry</label><br/>
                     <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
-                        <option default disabled>Select your dentistry</option>
+                        <option default disabled={this.state.dentistry}>Select your dentistry</option>
                         {dentistArr.map(({name, id}, index) => <option key={id} id ={id}>{name}</option>)}             
                     </select>
                     <br/>
