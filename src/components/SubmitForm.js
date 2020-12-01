@@ -14,27 +14,9 @@ class SubmitForm extends Component {
         super(props)
 
         this.state = {
-            name: '',
-            phoneNumber: '',
-            eMail: '',
             timeSlot: '',
             dentistry: ''
         }
-    }
-    handleNameChange = (event) => {
-        this.setState({
-            name: event.target.value
-        })
-    }
-    handlePhoneNumberChange = (event) => {
-        this.setState({
-            phoneNumber: event.target.value
-        })
-    }
-    handleEMailChange = (event) => {
-        this.setState({
-            eMail: event.target.value
-        })
     }
     handleDentistryChange = (event) => {
         this.setState({dentistry: event.target.value});
@@ -53,7 +35,7 @@ class SubmitForm extends Component {
             }
         }
         //Checks if which day of the week has been selected
-        for (var i = 0; i < Object.keys(thisDentist.openinghours).length; i++){
+        for (i = 0; i < Object.keys(thisDentist.openinghours).length; i++){
             if (Object.keys(thisDentist.openinghours)[i] === selectedDay){
                 openingHours = Object.values(thisDentist.openinghours)[i]
             }
@@ -79,7 +61,7 @@ class SubmitForm extends Component {
         var halfHour = false
 
         //Divides the openhours into timeslots
-        for (var i = 0; i < totalHours; i++){
+        for (i = 0; i < totalHours; i++){
         if (halfHour){
             timeSlotArr[i] = {time_slot: + '' + start + '' + ':30'}
             
@@ -100,7 +82,9 @@ class SubmitForm extends Component {
         })
     }
     handleSubmit = (event) => {
-        alert(`${this.state.name} ${this.state.phoneNumber} ${this.state.eMail} ${this.state.timeSlot} ${this.state.dentistry}`)
+        var issuance = new Date()
+        issuance = issuance.getTime()
+        alert(`${this.state.timeSlot} ${this.state.dentistry} ${issuance}`)
         event.preventDefault()
     }
         
@@ -117,19 +101,12 @@ class SubmitForm extends Component {
         return(
             <div id='position'>
               <TextBlock/>
-              <row><Calendar/></row>
+              <div><Calendar/></div>
                 <form onSubmit={this.handleSubmit}>
-                    <label>Name:</label><br/>
-                    <input type="text" value={this.state.name} placeholder = 'Name Namerson' onChange={this.handleNameChange}/><br/>
-                    <label>Phone number:</label><br/>
-                    <input type="text" value={this.state.phoneNumber} placeholder = '0712345678' onChange={this.handlePhoneNumberChange}/><br/>
-                    <label>Email:</label><br/>
-                    <input type="text" value={this.state.eMail} placeholder = 'youremail@domain.gov' onChange={this.handleEMailChange} /><br/>
-                     <label>Select a time</label><br/>
+                    <label>Select a time</label><br/>
                     <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
                         <option default disabled >Select a time slot</option>
-                        {timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}  
-                       
+                        {timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
                     </select><br/>
                     <label>Select a dentistry</label><br/>
                     <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
@@ -144,7 +121,7 @@ class SubmitForm extends Component {
     }
 }
 const TextBlock = () => {
-  const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then fill in your info and submit'
+  const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then select a time slot and submit'
   return (
       <p id='textBlock'>{textBlock}</p>
   )
