@@ -15,7 +15,7 @@ class SubmitForm extends Component {
 
         this.state = {
             timeSlot: '',
-            dentistry: ''
+            dentistry: '',
         }
     }
     handleDentistryChange = (event) => {
@@ -111,10 +111,10 @@ class SubmitForm extends Component {
                     <label>Select a dentistry</label><br/>
                     <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
                         <option default disabled>Select your dentistry</option>
-                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}             
+                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id}>{name}</option>)}             
                     </select>
                     <br/>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Submit" disabled={!this.state.timeSlot && !this.state.dentistry} />
                 </form>
             </div>
         )
