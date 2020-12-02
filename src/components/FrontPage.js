@@ -5,7 +5,6 @@ import DenistryMap from './DenistryMap.js'
 import '../css/FrontPage.css'
 import SidePanel from './SidePanel.js'
 
-
 function FrontPage() {
     return (
       <>        
