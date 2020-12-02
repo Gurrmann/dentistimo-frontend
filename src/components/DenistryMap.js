@@ -1,5 +1,4 @@
 import React from 'react';
-/*import ReactDOM from 'react-dom'; */
 import mapboxgl from 'mapbox-gl';
 import '../css/DenistryMap.css'
 
@@ -39,7 +38,8 @@ class DenistryMap extends React.Component {
         var TheCrown = new mapboxgl.Marker()
         .setLngLat([11.940386, 57.709872])
         .addTo(map);
-
+        
+        // add map controllers
         map.addControl(new mapboxgl.NavigationControl());
 
         map.on('move', () => {
@@ -68,19 +68,4 @@ class DenistryMap extends React.Component {
 
 
   export default DenistryMap
-
-
-/*import React from 'react'
-import '../css/DenistryMap.css'
-import MapboxMap from 'react-mapbox-wrapper';
-
-export default function DenistryMap({ coordinates }) {
-    return (
-          <div style={{ height: 400, width: 400 }}>
-            <MapboxMap accessToken='pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg' 
-            coordinates={{ lat: 11.9743374, lng: 57.708581 }} />
-          </div>
-    );
-} */
-
    
