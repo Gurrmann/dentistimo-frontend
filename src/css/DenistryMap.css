@@ -1,25 +1,22 @@
 .mapContainer {
   position: absolute;
-  top: 160px;
-  right: 153px;
-  left: 590px;
-  bottom: 207px;
+  top: 22%;
+  right: 10%;
+  left: 40%;
+  bottom: 25%;
+  border: whitesmoke;
+  border-style: solid;
 }
 
 .sidebarStyle {
   display: inline-block;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 21.5%;
+  left: 39.5%;
   margin: 12px;
   background-color: #404040;
   color: #ffffff;
   z-index: 1 !important;
-  padding: 6px;
+  padding: 3px;
   font-weight: bold;
 }
-
-/*#mapPosition {
-  background-color: yellow;
-} */
-
