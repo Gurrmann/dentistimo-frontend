@@ -1,4 +1,7 @@
 
+.background {
+  background-color: #404040;
+}
 .submission-map-container {
   display: flex;
   flex-direction: row;
@@ -8,11 +11,12 @@
 }
 
 .submit-form {
-  flex: 1;
+  display: flex;
   border-style: solid;
   border-color: white;
   margin-right: 100px;
   width: 300px;
+  margin-bottom: 100%;
 }
 
 .calendar {
@@ -24,12 +28,6 @@
   margin-left: 12%;
   margin-right: 64%;
   margin-bottom: 50px;
-}
-
-.map {
-  flex: 2;
-  border-style: solid;
-  border-color: white;
 }
 
 #infoText {
