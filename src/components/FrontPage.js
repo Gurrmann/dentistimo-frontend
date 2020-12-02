@@ -1,16 +1,69 @@
-import React from 'react';
-import Welcome from './Welcome.js'
+import React, { useState, Fragment } from 'react'
 import SubmitForm from './SubmitForm.js'
+import Calendar from './Calendar.js'
+import DenistryMap from './DenistryMap.js'
+import '../css/FrontPage.css'
+import SidePanel from './SidePanel.js'
+var mqtt = require('mqtt')
+var client = mqtt.connect('ws://test.mosquitto.org:8080')
+
+client.on('connect', function () {
+  client.subscribe('dentistries')
+
+})
 
 function FrontPage() {
+
+  client.on('message', function (topic, message) {
+    if (topic === 'dentistries'){
+    //start with and empty array
+    var dentistArr = []
+      message = message.toString()
+      message = JSON.parse(message)
+   
+      //compares the current array length to the length of the message, just to avoid errors
+    if (dentistArr.length < message.length){
+      for (var i = 0; i < message.length; i++){
+        dentistArr.push(message[i])
+      }
+      //sets the message to be the array
+    setMesg(dentistArr)
+
+    //stops the subscriber
+    client.end()
+    }
+  }
+  })
+  
+
+  const [mesg, setMesg] = useState(<Fragment><em>nothing heard</em></Fragment>);
+
+  //on line 50 we pass the message to the submitform component
+
     return (
-
-      <div>
-        <Welcome />
-        <SubmitForm />
+      <>
+        <InfoText />
+        <SidePanel />
+      <div className='submission-map-container'>
+        <div className='submit-form'>
+          <SubmitForm dentistryarr={mesg} /> 
+        </div>
+        <div className='map'>
+          <DenistryMap />
+        </div>
       </div>
-      
+      </>
 
+
+    )
+}
+
+const InfoText = () => {
+  const banner = 'Dentistimo'
+    return (
+      <div>
+        <h1 id='infoText'>{banner}</h1>
+      </div>
     )
 }
 
