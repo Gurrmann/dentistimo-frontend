@@ -3,11 +3,13 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
 
+var userId = Math.floor(Math.random() * 1000000000)
 var dentistArr = []          //The array of the selected dentistry
 var selectedDate = ''        //Selected date YYYY-MM-DD
 var selectedDay = ''         //Selected day
 var selectedDentist = ''     //Name of selected dentist
 var selectedId = ''          //Id of the selected dentistry
+var count = 1
 
 class SubmitForm extends Component {
     state = {
@@ -102,10 +104,11 @@ class SubmitForm extends Component {
         var issuance = new Date()
         issuance = issuance.getTime()
         console.log(selectedDate)
+        
         var bookingRequest = {
             
-            userid: Math.floor(Math.random() * 1000000000),
-        // requestid:
+            userid: userId,
+            requestid: count,
             dentistid: selectedId,
             issuance: issuance,
             time: selectedDate + ' ' + this.state.timeSlot
@@ -113,6 +116,7 @@ class SubmitForm extends Component {
         }
         console.log(bookingRequest)
         event.preventDefault()
+        count++
     }
     handleDateChange = (value, event) => {
         this.setState({timeSlot: ''});
