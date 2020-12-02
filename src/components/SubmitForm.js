@@ -231,7 +231,6 @@ class SubmitForm extends Component {
         }
         return(
             <div id='position'>
-              <TextBlock/>
               <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <form onSubmit={this.handleSubmit}>
                    <label>Select a time: {this.state.timeSlot}</label><br/>
