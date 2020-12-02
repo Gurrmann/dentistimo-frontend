@@ -3,7 +3,7 @@ import FrontPage from './components/FrontPage.js'
 
 function App() {
   return (
-    <div>
+    <div className='backgroundco'>
     <FrontPage />
     </div>
   );

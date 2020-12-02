@@ -12,6 +12,7 @@ client.on('connect', function () {
 
 })
 
+
 function FrontPage() {
 
   client.on('message', function (topic, message) {
