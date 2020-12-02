@@ -15,6 +15,7 @@ client.on('connect', function () {
 function FrontPage() {
 
   client.on('message', function (topic, message) {
+    if (topic === 'dentistries'){
     //start with and empty array
     var dentistArr = []
       message = message.toString()
@@ -31,6 +32,7 @@ function FrontPage() {
     //stops the subscriber
     client.end()
     }
+  }
   })
   
 

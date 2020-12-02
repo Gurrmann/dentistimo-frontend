@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
 var mqtt = require('mqtt')
-var client = mqtt.connect('ws://test.mosquitto.org:8080')
+var response = mqtt.connect('ws://test.mosquitto.org:8080')
 
 var userId = Math.floor(Math.random() * 1000000000)
 var dentistArr = []          //The array of the selected dentistry
@@ -12,6 +12,20 @@ var selectedDay = ''         //Selected day
 var selectedDentist = ''     //Name of selected dentist
 var selectedId = ''          //Id of the selected dentistry
 var count = 1
+
+response.on('connect', function () {
+    response.subscribe(userId.toString())
+  })
+
+  response.on('message', function (topic, message) {
+      if (topic === userId.toString()){
+
+        message = JSON.parse(message)
+        alert(message.msg)
+
+      }
+
+})
 
 class SubmitForm extends Component {
     state = {
@@ -118,7 +132,7 @@ class SubmitForm extends Component {
         }
         console.log(bookingRequest)
         event.preventDefault()
-        client.publish('bookingRequest', JSON.stringify(bookingRequest))
+        response.publish('bookingRequest', JSON.stringify(bookingRequest))
         count++
     }
     handleDateChange = (value, event) => {
