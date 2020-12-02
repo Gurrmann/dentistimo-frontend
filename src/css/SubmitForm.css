@@ -2,12 +2,19 @@ input {
     background-color: white;
     align-items: right;
 }
+select {
+    background-color: white;
+}
+option {
+    background-color: white;
+}
 label {
     color: white;
 }
 form {
     color: white;
 }
+
 #textBlock {
   color: white;
   font-size: 18px;
