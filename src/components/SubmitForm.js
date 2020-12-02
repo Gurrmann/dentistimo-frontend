@@ -21,8 +21,10 @@ response.on('connect', function () {
       if (topic === userId.toString()){
 
         message = JSON.parse(message)
-        alert("An appointment has been booked for" + ' ' + message.time)
-
+        if (message.time === 'none')
+        {alert("Appointment has not been registered")}
+        else 
+        {alert("An appointment has been booked for" + ' ' + message.time)}
       }
 
 })
