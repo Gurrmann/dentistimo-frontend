@@ -13,9 +13,10 @@
 .submit-form {
   display: flex;
   margin-right: 100px;
-  margin-top: 12%;
+  margin-top: 168px;
   width: 300px;
   margin-bottom: 100%;
+  font-family: monospace;
 }
 
 .calendar {
@@ -36,7 +37,7 @@
   text-align: center;
   margin: 0px;
   padding: 0px;
-  background-color: #2e9692;
+  background-image: linear-gradient(#2e3096,#4346dd);
 }
 
 body {background-color: #292a35;}
