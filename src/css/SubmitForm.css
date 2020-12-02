@@ -1,18 +1,32 @@
-input {
-    background-color: white;
+.submitInput {
+    background-color: #dddddd;
     align-items: right;
+    border: 0px;
+    font-family: monospace;
+    box-shadow: 2px 2px 1px #6d6d6d;
 }
+.submitInput:hover{
+    background-image: radial-gradient(#afd3df,#6bb9c7);
+}
+
 select {
-    background-color: white;
+    margin-bottom: 10px;
 }
 option {
     background-color: white;
 }
 label {
     color: white;
+    margin-bottom: 5px;
 }
 form {
     color: white;
+}
+.cal {
+    margin-bottom: 10px;
+    background-image: linear-gradient(#ffffff, #e0e1ff);
+    border: 2px;
+    border-style: solid;
 }
 
 #textBlock {

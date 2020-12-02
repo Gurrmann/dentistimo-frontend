@@ -233,20 +233,20 @@ class SubmitForm extends Component {
         }
         return(
             <div id='position'>
-              <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
+              <div><Calendar className="cal" onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <form onSubmit={this.handleSubmit}>
-                   <label>Select a time: {this.state.timeSlot}</label><br/>
-                    <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
-                       <option default disabled>Select a time slot</option>
-                        {this.state.timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
-                    </select><br/>
                     <label>Select a dentistry: {this.state.dentistry}</label><br/>
                     <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
                         <option default disabled={this.state.dentistry}>Select your dentistry</option>
                         {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}
                     </select>
                     <br/>
-                    <input type="submit" value="Submit" disabled={!this.state.timeSlot} />
+                   <label>Select a time: {this.state.timeSlot}</label><br/>
+                    <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
+                       <option default disabled>Select a time slot</option>
+                        {this.state.timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
+                    </select><br/>
+                    <input className="submitInput" type="submit" value="Submit" disabled={!this.state.timeSlot} />
                 </form>
             </div>
         )
