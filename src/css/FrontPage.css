@@ -12,9 +12,8 @@
 
 .submit-form {
   display: flex;
-  border-style: solid;
-  border-color: white;
   margin-right: 100px;
+  margin-top: 12%;
   width: 300px;
   margin-bottom: 100%;
 }
