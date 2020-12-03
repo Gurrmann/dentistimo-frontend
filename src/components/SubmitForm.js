@@ -24,7 +24,7 @@ response.on('connect', function () {
         if (message.time === 'none')
         {alert("Appointment has not been registered")}
         else 
-        {alert("An appointment has been booked for" + ' ' + message.time)}
+        {alert("An appointment has been booked for" + ' ' + message.time.toString())}
       }
 
 })
