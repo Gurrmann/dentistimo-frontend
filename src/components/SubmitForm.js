@@ -21,10 +21,8 @@ response.on('connect', function () {
       if (topic === userId.toString()){
 
         message = JSON.parse(message)
-        if (message.time === 'none')
-        {alert("Appointment has not been registered")}
-        else 
-        {alert("An appointment has been booked for" + ' ' + message.time.toString())}
+        alert(message.msg)
+
       }
 
 })
@@ -51,10 +49,10 @@ class SubmitForm extends Component {
         this.handleDentistry ()
     }
 
-    handleDentistry () {
+    handleDentistry () {    
         if (selectedDentist === ''){
         }else {
-
+            
         this.setState({timeSlotArr: []})
         var thisDentist = []
         var dayOfWeek = ''
@@ -79,7 +77,7 @@ class SubmitForm extends Component {
         if (dayOfWeek.charAt(1) === ':'){
             start = dayOfWeek.substring(0, 4)
             end = dayOfWeek.substring(5, 10)
-        }
+        } 
         else {
             start = dayOfWeek.substring(0, 6)
             end = dayOfWeek.substring(6, 11)
@@ -122,9 +120,9 @@ class SubmitForm extends Component {
         var issuance = new Date()
         issuance = issuance.getTime()
         console.log(selectedDate)
-
+        
         var bookingRequest = {
-
+            
             userid: userId,
             requestid: count,
             dentistid: selectedId,
@@ -213,14 +211,14 @@ class SubmitForm extends Component {
                 month = "12"
             break;
           }
-
+          
           selectedDate = year + '-' + month + '-' + day
           selectedDay = weekDay
 
           this.handleDentistry()
     }
-
-
+   
+        
     render() {
  //The data from frontpage is sent after the webpage has loaded, so we check if it has been sent, if it has not we have an empty array
  // drop down options for timetable, not working {dentistArr.map(({monday, id}, index) => <option key={id} id ={id} >{monday}</option>)}
@@ -233,20 +231,20 @@ class SubmitForm extends Component {
         }
         return(
             <div id='position'>
-              <div><Calendar className="cal" onChange={this.handleDateChange} Days={this.state.date} /></div>
+              <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <form onSubmit={this.handleSubmit}>
-                    <label>Select a dentistry: {this.state.dentistry}</label><br/>
-                    <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
-                        <option default disabled={this.state.dentistry}>Select your dentistry</option>
-                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}
-                    </select>
-                    <br/>
                    <label>Select a time: {this.state.timeSlot}</label><br/>
                     <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
                        <option default disabled>Select a time slot</option>
                         {this.state.timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
                     </select><br/>
-                    <input className="submitInput" type="submit" value="Submit" disabled={!this.state.timeSlot} />
+                    <label>Select a dentistry: {this.state.dentistry}</label><br/>
+                    <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
+                        <option default disabled={this.state.dentistry}>Select your dentistry</option>
+                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}             
+                    </select>
+                    <br/>
+                    <input type="submit" value="Submit" disabled={!this.state.timeSlot} />
                 </form>
             </div>
         )
