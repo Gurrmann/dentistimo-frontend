@@ -106,6 +106,10 @@ class SubmitForm extends Component {
         }
         halfHour = !halfHour
       }
+      //Assigned lunch break at middle of opening hours
+      tempArr.splice(tempArr.length/2, 2)
+      //Assigned fika
+      tempArr.splice(tempArr.length - 4, 1)
       this.setState({timeSlotArr: tempArr})
   }
 }
