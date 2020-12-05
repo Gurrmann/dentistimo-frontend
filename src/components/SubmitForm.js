@@ -19,10 +19,12 @@ response.on('connect', function () {
 
   response.on('message', function (topic, message) {
       if (topic === userId.toString()){
-
         message = JSON.parse(message)
-        alert(message.msg)
-
+        if (message.time === 'none'){
+            alert("Could not book appointment, timeslot is already occupied")
+        }else {
+            alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)
+        }
       }
 
 })
@@ -119,7 +121,6 @@ class SubmitForm extends Component {
     handleSubmit = (event) => {
         var issuance = new Date()
         issuance = issuance.getTime()
-        console.log(selectedDate)
         
         var bookingRequest = {
             
@@ -130,7 +131,6 @@ class SubmitForm extends Component {
             time: selectedDate + ' ' + this.state.timeSlot
 
         }
-        console.log(bookingRequest)
         event.preventDefault()
         response.publish('bookingRequest', JSON.stringify(bookingRequest))
         count++
