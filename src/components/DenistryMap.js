@@ -27,6 +27,7 @@ class DenistryMap extends React.Component {
         // eslint-disable-next-line
         var YourDentist = new mapboxgl.Marker()
         .setLngLat([11.969388, 57.707619])
+        .setPopup()
         .addTo(map);
 
         // eslint-disable-next-line
