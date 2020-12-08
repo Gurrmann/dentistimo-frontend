@@ -50,7 +50,6 @@ function FrontPage() {
           <SubmitForm dentistryarr={mesg} /> 
         </div>
         <div className='map'>
-          <DenistryMap />
         </div>
       </div>
       </>
