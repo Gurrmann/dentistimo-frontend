@@ -60,6 +60,7 @@ class SubmitForm extends Component {
         var dayOfWeek = ''
         var start = ''
         var end = ''
+        
 
         //Checks of there is a dentistry within the array that matches the name of the selected dentistry, if true it copies the dentistry
         //over to thisDentist array
@@ -126,13 +127,15 @@ class SubmitForm extends Component {
         var issuance = new Date()
         issuance = issuance.getTime()
         
+        
         var bookingRequest = {
             
             userid: userId,
             requestid: count,
             dentistid: selectedId,
             issuance: issuance,
-            time: selectedDate + ' ' + this.state.timeSlot
+            time: selectedDate + ' ' + this.state.timeSlot,
+            numberOfDentists: dentistArr.find(element => element.id === selectedId).dentists
 
         }
         event.preventDefault()
