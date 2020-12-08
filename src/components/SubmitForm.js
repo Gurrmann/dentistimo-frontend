@@ -252,14 +252,16 @@ class SubmitForm extends Component {
     handleSubmit = (event) => {
         var issuance = new Date()
         issuance = issuance.getTime()
-
+        
+        
         var bookingRequest = {
 
             userid: userId,
             requestid: count,
             dentistid: selectedId,
             issuance: issuance,
-            time: selectedDate + ' ' + this.state.timeSlot
+            time: selectedDate + ' ' + this.state.timeSlot,
+            numberOfDentists: dentistArr.find(element => element.id === selectedId).dentists
 
         }
         event.preventDefault()
