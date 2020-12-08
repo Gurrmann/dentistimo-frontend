@@ -65,4 +65,11 @@ form {
     margin-left: 12%;
     margin-right: 12%;
   }
+  .displayCenter {
+    font-size: 18px;
+    text-align: center;
+  }
+  .displayLeft {
+    font-size: 18px;
+  }
   

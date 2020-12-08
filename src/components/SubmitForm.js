@@ -39,6 +39,11 @@ class SubmitForm extends Component {
             timeSlot: '',
             dentistry: '',
             timeSlotArr: [],
+            selectedMonday: '',
+            selectedTuesday: '',
+            selectedWednesday: '',
+            selectedThursday: '',
+            selectedFriday: '',
             lng: 11.974560,
             lat: 57.708870,
             zoom: 11.5
@@ -76,7 +81,9 @@ class SubmitForm extends Component {
                             {
                                 'type': 'Feature',
                                 'properties': {
-                                'name': dentistArr[i].name
+                                    'name': dentistArr[i].name,
+                                    'description':
+                                        '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
                                 },
                                 'geometry': {
                                     'type': 'Point',
@@ -99,15 +106,49 @@ class SubmitForm extends Component {
                     }
                 );
 
-                map.on('click', 'points', function (e) {
-                    var name = e.features[0].properties.name
-              console.log(name)
-                    });
+                var popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+
+                map.on('mouseenter', 'points', function (e) {
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    var desc = e.features[0].properties.description
+
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+
+                    popup.setLngLat(coordinates).setHTML(desc).addTo(map);
+                });
+
+                map.on('mouseleave', 'points', function () {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                });
 
             });
-
         }
 
+
+        map.on('click', 'points', (e) => {
+            selectedDentist = e.features[0].properties.name
+            this.setState({
+                dentistry: e.features[0].properties.name,
+                timeSlot: ''
+            });
+            this.handleDentistry()
+        });
 
         // add map controllers
         map.addControl(new mapboxgl.NavigationControl());
@@ -146,6 +187,13 @@ class SubmitForm extends Component {
                 if (dentistArr[i].name === selectedDentist) {
                     thisDentist = dentistArr[i]
                     selectedId = dentistArr[i].id
+                    this.setState({
+                        selectedMonday: dentistArr[i].openinghours.monday,
+                        selectedTuesday: dentistArr[i].openinghours.tuesday,
+                        selectedWednesday: dentistArr[i].openinghours.wednesday,
+                        selectedThursday: dentistArr[i].openinghours.thursday,
+                        selectedFriday: dentistArr[i].openinghours.friday
+                    })
                 }
             }
             //Checks if which day of the week has been selected
@@ -298,7 +346,9 @@ class SubmitForm extends Component {
         selectedDate = year + '-' + month + '-' + day
         selectedDay = weekDay
 
+        this.componentDidMount()
         this.handleDentistry()
+
     }
 
     render() {
@@ -309,7 +359,6 @@ class SubmitForm extends Component {
                 for (var i = 0; i < this.props.dentistryarr.length; i++) {
                     dentistArr.push(this.props.dentistryarr[i])
                 }
-                this.componentDidMount()
             }
         }
 
@@ -317,20 +366,15 @@ class SubmitForm extends Component {
 
             <div id='position'>
                 <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
-                <form onSubmit={this.handleSubmit}>
+                <br />
+                {this.state.dentistry && <form onSubmit={this.handleSubmit}>
                     <label>Select a time: {this.state.timeSlot}</label><br />
                     <select value={this.state.timeSlot} onChange={this.handleTimeChange}>
                         <option default disabled>Select a time slot</option>
                         {this.state.timeSlotArr.map(({ time_slot }, index) => <option key={time_slot} time_slot={time_slot} >{time_slot}</option>)}
                     </select><br />
-                    <label>Select a dentistry: {this.state.dentistry}</label><br />
-                    <select value={this.state.dentistry} onChange={this.handleDentistryChange}>
-                        <option default disabled={this.state.dentistry}>Select your dentistry</option>
-                        {dentistArr.map(({ name, id }, index) => <option key={id} id={id} >{name}</option>)}
-                    </select>
-                    <br />
                     <input type="submit" value="Submit" disabled={!this.state.timeSlot} />
-                </form>
+                </form>}
                 <div className='map'>
                     <div className='sidebarStyle'>
                         <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}
@@ -338,6 +382,20 @@ class SubmitForm extends Component {
                     </div>
                     <div ref={el => this.mapContainer = el} className='mapContainer' />
                 </div>
+                <br />
+                {this.state.dentistry && <div>
+                    {this.state.dentistry && <strong className='displayCenter' >{this.state.dentistry}</strong>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Monday: {this.state.selectedMonday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Tuesday: {this.state.selectedTuesday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Wednesday: {this.state.selectedWednesday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Thursday: {this.state.selectedThursday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Friday: {this.state.selectedFriday}</label>}
+                </div>}
             </div>
         )
     }
