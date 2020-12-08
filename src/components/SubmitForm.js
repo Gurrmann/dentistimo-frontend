@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
+import mapboxgl from 'mapbox-gl';
 var mqtt = require('mqtt')
 var response = mqtt.connect('ws://test.mosquitto.org:8080')
+mapboxgl.accessToken = 'pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg';
 
 var userId = Math.floor(Math.random() * 1000000000)
 var dentistArr = []          //The array of the selected dentistry
@@ -15,108 +17,232 @@ var count = 1
 
 response.on('connect', function () {
     response.subscribe(userId.toString())
-  })
+})
 
-  response.on('message', function (topic, message) {
-      if (topic === userId.toString()){
+response.on('message', function (topic, message) {
+    if (topic === userId.toString()) {
         message = JSON.parse(message)
-        if (message.time === 'none'){
+        if (message.time === 'none') {
             alert("Could not book appointment, timeslot is already occupied")
-        }else {
+        } else {
             alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)
         }
-      }
+    }
 
 })
 
 class SubmitForm extends Component {
-    state = {
-        selectedDentistryOption: 'None',
-    }
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
             timeSlot: '',
             dentistry: '',
-            timeSlotArr: []
+            timeSlotArr: [],
+            selectedMonday: '',
+            selectedTuesday: '',
+            selectedWednesday: '',
+            selectedThursday: '',
+            selectedFriday: '',
+            lng: 11.974560,
+            lat: 57.708870,
+            zoom: 11.5
         }
     }
+    componentDidMount() {
+        const map = new mapboxgl.Map({
+            container: this.mapContainer,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [this.state.lng, this.state.lat],
+            zoom: this.state.zoom
+        });
+
+        if (dentistArr.length) {
+
+            map.on('load', function () {
+                map.loadImage(
+                    'https://cdn2.iconfinder.com/data/icons/web-and-ecommerce/24/GPS_Location-512.png',
+                    function (error, image) {
+                        if (error) throw error;
+                        map.addImage('marker', image);
+                        var tempA = {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': []
+                            }
+                        }
+
+                        for (var i = 0; i < dentistArr.length; i++) {
+
+                            var long = dentistArr[i].coordinate.longitude
+                            var lat = dentistArr[i].coordinate.latitude
+                            var temp =
+                            {
+                                'type': 'Feature',
+                                'properties': {
+                                    'name': dentistArr[i].name,
+                                    'description':
+                                        '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
+                                },
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [long, lat]
+                                }
+                            }
+                            tempA.data.features.push(temp)
+                        }
+
+                        map.addSource('point', tempA);
+                        map.addLayer({
+                            'id': 'points',
+                            'type': 'symbol',
+                            'source': 'point',
+                            'layout': {
+                                'icon-image': 'marker',
+                                'icon-size': 0.07
+                            }
+                        });
+                    }
+                );
+
+                var popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+
+                map.on('mouseenter', 'points', function (e) {
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    var desc = e.features[0].properties.description
+
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+
+                    popup.setLngLat(coordinates).setHTML(desc).addTo(map);
+                });
+
+                map.on('mouseleave', 'points', function () {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                });
+
+            });
+        }
+
+
+        map.on('click', 'points', (e) => {
+            selectedDentist = e.features[0].properties.name
+            this.setState({
+                dentistry: e.features[0].properties.name,
+                timeSlot: ''
+            });
+            this.handleDentistry()
+        });
+
+        // add map controllers
+        map.addControl(new mapboxgl.NavigationControl());
+
+        map.on('move', () => {
+            this.setState({
+                lng: map.getCenter().lng.toFixed(4),
+                lat: map.getCenter().lat.toFixed(4),
+                zoom: map.getZoom().toFixed(2)
+            });
+        });
+    }
     handleDentistryChange = (event) => {
-        this.setState({dentistry: event.target.value,
-                        timeSlot: ''
+        this.setState({
+            dentistry: event.target.value,
+            timeSlot: ''
         });
 
         selectedDentist = event.target.value
-        this.handleDentistry ()
+        this.handleDentistry()
     }
 
-    handleDentistry () {    
-        if (selectedDentist === ''){
-        }else {
-            
-        this.setState({timeSlotArr: []})
-        var thisDentist = []
-        var dayOfWeek = ''
-        var start = ''
-        var end = ''
-        
+    handleDentistry() {
+        if (selectedDentist === '') {
+        } else {
 
-        //Checks of there is a dentistry within the array that matches the name of the selected dentistry, if true it copies the dentistry
-        //over to thisDentist array
-        for (var i = 0; i < dentistArr.length; i++){
-            if (dentistArr[i].name === selectedDentist){
-                thisDentist = dentistArr[i]
-                selectedId = dentistArr[i].id
+            this.setState({ timeSlotArr: [] })
+            var thisDentist = []
+            var dayOfWeek = ''
+            var start = ''
+            var end = ''
+
+            //Checks of there is a dentistry within the array that matches the name of the selected dentistry, if true it copies the dentistry
+            //over to thisDentist array
+            for (var i = 0; i < dentistArr.length; i++) {
+                if (dentistArr[i].name === selectedDentist) {
+                    thisDentist = dentistArr[i]
+                    selectedId = dentistArr[i].id
+                    this.setState({
+                        selectedMonday: dentistArr[i].openinghours.monday,
+                        selectedTuesday: dentistArr[i].openinghours.tuesday,
+                        selectedWednesday: dentistArr[i].openinghours.wednesday,
+                        selectedThursday: dentistArr[i].openinghours.thursday,
+                        selectedFriday: dentistArr[i].openinghours.friday
+                    })
+                }
             }
-        }
-        //Checks if which day of the week has been selected
-        for (i = 0; i < Object.keys(thisDentist.openinghours).length; i++){
-            if (Object.keys(thisDentist.openinghours)[i] === selectedDay){
-                dayOfWeek = Object.values(thisDentist.openinghours)[i]
+            //Checks if which day of the week has been selected
+            for (i = 0; i < Object.keys(thisDentist.openinghours).length; i++) {
+                if (Object.keys(thisDentist.openinghours)[i] === selectedDay) {
+                    dayOfWeek = Object.values(thisDentist.openinghours)[i]
+                }
             }
-        }
-        //checks if start begins with a single digit or two
-        if (dayOfWeek.charAt(1) === ':'){
-            start = dayOfWeek.substring(0, 4)
-            end = dayOfWeek.substring(5, 10)
-        } 
-        else {
-            start = dayOfWeek.substring(0, 6)
-            end = dayOfWeek.substring(6, 11)
-        }
-        start = start.replace(':', '.')
-        end = end.replace(':', '.')
+            //checks if start begins with a single digit or two
+            if (dayOfWeek.charAt(1) === ':') {
+                start = dayOfWeek.substring(0, 4)
+                end = dayOfWeek.substring(5, 10)
+            }
+            else {
+                start = dayOfWeek.substring(0, 6)
+                end = dayOfWeek.substring(6, 11)
+            }
+            start = start.replace(':', '.')
+            end = end.replace(':', '.')
 
-        //Parses start and end to floats so we can do math on them
-        start = parseFloat(start)
-        end = parseFloat(end)
+            //Parses start and end to floats so we can do math on them
+            start = parseFloat(start)
+            end = parseFloat(end)
 
-        //Calculate the total amount of hours that the dentistry will be open for the selected day
-        var totalHours = (end - start)*2
-        var halfHour = false
+            //Calculate the total amount of hours that the dentistry will be open for the selected day
+            var totalHours = (end - start) * 2
+            var halfHour = false
 
-        var tempArr = []
-        //Divides the openhours into timeslots
-        for (i = 0; i < totalHours; i++){
-        if (halfHour){
-            tempArr.push({time_slot: + '' + start + '' + ':30'})
-            start++
-        }else {
-            tempArr.push({time_slot: + '' + start + '' + ':00'})
+            var tempArr = []
+            //Divides the openhours into timeslots
+            for (i = 0; i < totalHours; i++) {
+                if (halfHour) {
+                    tempArr.push({ time_slot: + '' + start + '' + ':30' })
+                    start++
+                } else {
+                    tempArr.push({ time_slot: + '' + start + '' + ':00' })
+                }
+                halfHour = !halfHour
+            }
+            //Assigned lunch break at middle of opening hours
+            tempArr.splice(tempArr.length / 2, 2)
+            //Assigned fika
+            tempArr.splice(tempArr.length - 4, 1)
+            this.setState({ timeSlotArr: tempArr })
         }
-        halfHour = !halfHour
-      }
-      //Assigned lunch break at middle of opening hours
-      tempArr.splice(tempArr.length/2, 2)
-      //Assigned fika
-      tempArr.splice(tempArr.length - 4, 1)
-      this.setState({timeSlotArr: tempArr})
-  }
-}
+    }
 
     handleTimeChange = (event) => {
-        this.setState({timeSlot: event.target.value});
+        this.setState({ timeSlot: event.target.value });
     }
     handleFormChange = ({ target }) => {
         this.setState({
@@ -129,7 +255,7 @@ class SubmitForm extends Component {
         
         
         var bookingRequest = {
-            
+
             userid: userId,
             requestid: count,
             dentistid: selectedId,
@@ -143,7 +269,7 @@ class SubmitForm extends Component {
         count++
     }
     handleDateChange = (value, event) => {
-        this.setState({timeSlot: ''});
+        this.setState({ timeSlot: '' });
         selectedDate = ''
         var weekDay = ''
         var month = ''
@@ -157,111 +283,130 @@ class SubmitForm extends Component {
         day = year = selection.substring(6, 8)
         year = selection.substring(8, 12)
 
-        switch(weekDay) {
+        switch (weekDay) {
             case "Mon":
                 weekDay = "monday"
-            break;
+                break;
             case "Tue":
                 weekDay = "tuesday"
-            break;
+                break;
             case "Wed":
                 weekDay = "wednesday"
-            break;
+                break;
             case "Thu":
                 weekDay = "thursday"
-            break;
+                break;
             case "Fri":
                 weekDay = "friday"
-            break;
+                break;
             case "Sat":
                 weekDay = "saturday"
-            break;
+                break;
             case "Sun":
                 weekDay = "sunday"
-            break;
-          }
-          switch(month) {
+                break;
+        }
+        switch (month) {
             case "Jan":
                 month = "01"
-            break;
+                break;
             case "Feb":
                 month = "02"
-            break;
+                break;
             case "Mar":
                 month = "03"
-            break;
+                break;
             case "Apr":
                 month = "04"
-            break;
+                break;
             case "May":
                 month = "05"
-            break;
+                break;
             case "Jun":
                 month = "06"
-            break;
+                break;
             case "Jul":
                 month = "07"
-            break;
+                break;
             case "Aug":
                 month = "08"
-            break;
+                break;
             case "Sep":
                 month = "09"
-            break;
+                break;
             case "Oct":
                 month = "10"
-            break;
+                break;
             case "Nov":
                 month = "11"
-            break;
+                break;
             case "Dec":
                 month = "12"
-            break;
-          }
-          
-          selectedDate = year + '-' + month + '-' + day
-          selectedDay = weekDay
+                break;
+        }
 
-          this.handleDentistry()
+        selectedDate = year + '-' + month + '-' + day
+        selectedDay = weekDay
+
+        this.componentDidMount()
+        this.handleDentistry()
+
     }
-   
-        
+
     render() {
- //The data from frontpage is sent after the webpage has loaded, so we check if it has been sent, if it has not we have an empty array
- // drop down options for timetable, not working {dentistArr.map(({monday, id}, index) => <option key={id} id ={id} >{monday}</option>)}
+        //The data from frontpage is sent after the webpage has loaded, so we check if it has been sent, if it has not we have an empty array
+        // drop down options for timetable, not working {dentistArr.map(({monday, id}, index) => <option key={id} id ={id} >{monday}</option>)}
         if (this.props.dentistryarr.length) {
-            if (dentistArr.length < this.props.dentistryarr.length){
-                for (var i = 0; i < this.props.dentistryarr.length; i++){
+            if (dentistArr.length < this.props.dentistryarr.length) {
+                for (var i = 0; i < this.props.dentistryarr.length; i++) {
                     dentistArr.push(this.props.dentistryarr[i])
                 }
             }
         }
-        return(
+
+        return (
+
             <div id='position'>
-              <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
-                <form onSubmit={this.handleSubmit}>
-                   <label>Select a time: {this.state.timeSlot}</label><br/>
-                    <select value= {this.state.timeSlot} onChange={this.handleTimeChange}>
-                       <option default disabled>Select a time slot</option>
-                        {this.state.timeSlotArr.map(({time_slot}, index) => <option key={time_slot} time_slot ={time_slot} >{time_slot}</option>)}
-                    </select><br/>
-                    <label>Select a dentistry: {this.state.dentistry}</label><br/>
-                    <select value= {this.state.dentistry} onChange={this.handleDentistryChange}>
-                        <option default disabled={this.state.dentistry}>Select your dentistry</option>
-                        {dentistArr.map(({name, id}, index) => <option key={id} id ={id} >{name}</option>)}             
-                    </select>
-                    <br/>
+                <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
+                <br />
+                {this.state.dentistry && <form onSubmit={this.handleSubmit}>
+                    <label>Select a time: {this.state.timeSlot}</label><br />
+                    <select value={this.state.timeSlot} onChange={this.handleTimeChange}>
+                        <option default disabled>Select a time slot</option>
+                        {this.state.timeSlotArr.map(({ time_slot }, index) => <option key={time_slot} time_slot={time_slot} >{time_slot}</option>)}
+                    </select><br />
                     <input type="submit" value="Submit" disabled={!this.state.timeSlot} />
-                </form>
+                </form>}
+                <div className='map'>
+                    <div className='sidebarStyle'>
+                        <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}
+                        </div>
+                    </div>
+                    <div ref={el => this.mapContainer = el} className='mapContainer' />
+                </div>
+                <br />
+                {this.state.dentistry && <div>
+                    {this.state.dentistry && <strong className='displayCenter' >{this.state.dentistry}</strong>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Monday: {this.state.selectedMonday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Tuesday: {this.state.selectedTuesday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Wednesday: {this.state.selectedWednesday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Thursday: {this.state.selectedThursday}</label>}
+                    <br />
+                    {this.state.dentistry && <label className='displayLeft' >Friday: {this.state.selectedFriday}</label>}
+                </div>}
             </div>
         )
     }
 }
 const TextBlock = () => {
-  const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then select a time slot and submit'
-  return (
-      <p id='textBlock'>{textBlock}</p>
-  )
+    const textBlock = 'To book a time, either pick the dentistry you want from the form or select a marker on the map and then select a time slot and submit'
+    return (
+        <p id='textBlock'>{textBlock}</p>
+    )
 }
 
 export default SubmitForm;
