@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
 import mapboxgl from 'mapbox-gl';
 var mqtt = require('mqtt')
-var response = mqtt.connect('ws://test.mosquitto.org:8080')
+var response = mqtt.connect('ws://test.mosquitto.org:8081')
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg';
 
 var userId = Math.floor(Math.random() * 1000000000)
@@ -25,7 +25,9 @@ response.on('message', function (topic, message) {
         if (message.time === 'none') {
             alert("Could not book appointment, timeslot is already occupied")
         } else {
-            alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)
+            if(!alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)){
+                window.location.reload();
+            }
         }
     }
 
@@ -59,50 +61,53 @@ class SubmitForm extends Component {
 
         if (dentistArr.length) {
 
+            var tempA = {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': []
+                }
+            }
+
+            for (var i = 0; i < dentistArr.length; i++) {
+            if (this.test(dentistArr[i]).length > 0) {
+                var long = dentistArr[i].coordinate.longitude
+                var lat = dentistArr[i].coordinate.latitude
+                var temp =
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'name': dentistArr[i].name,
+                        'description':
+                            '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
+                    },
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [long, lat]
+                    }
+                }
+                tempA.data.features.push(temp)
+            }
+        }
+
             map.on('load', function () {
                 map.loadImage(
                     'https://cdn2.iconfinder.com/data/icons/web-and-ecommerce/24/GPS_Location-512.png',
                     function (error, image) {
                         if (error) throw error;
                         map.addImage('marker', image);
-                        var tempA = {
-                            'type': 'geojson',
-                            'data': {
-                                'type': 'FeatureCollection',
-                                'features': []
-                            }
-                        }
-
-                        for (var i = 0; i < dentistArr.length; i++) {
-
-                            var long = dentistArr[i].coordinate.longitude
-                            var lat = dentistArr[i].coordinate.latitude
-                            var temp =
-                            {
-                                'type': 'Feature',
-                                'properties': {
-                                    'name': dentistArr[i].name,
-                                    'description':
-                                        '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
-                                },
-                                'geometry': {
-                                    'type': 'Point',
-                                    'coordinates': [long, lat]
+                
+                            map.addSource('point', tempA);
+                            map.addLayer({
+                                'id': 'points',
+                                'type': 'symbol',
+                                'source': 'point',
+                                'layout': {
+                                    'icon-image': 'marker',
+                                    'icon-size': 0.07
                                 }
-                            }
-                            tempA.data.features.push(temp)
-                        }
-
-                        map.addSource('point', tempA);
-                        map.addLayer({
-                            'id': 'points',
-                            'type': 'symbol',
-                            'source': 'point',
-                            'layout': {
-                                'icon-image': 'marker',
-                                'icon-size': 0.07
-                            }
-                        });
+                            });
+                        
                     }
                 );
 
@@ -140,7 +145,6 @@ class SubmitForm extends Component {
             });
         }
 
-
         map.on('click', 'points', (e) => {
             selectedDentist = e.features[0].properties.name
             this.setState({
@@ -161,6 +165,7 @@ class SubmitForm extends Component {
             });
         });
     }
+
     handleDentistryChange = (event) => {
         this.setState({
             dentistry: event.target.value,
@@ -171,15 +176,68 @@ class SubmitForm extends Component {
         this.handleDentistry()
     }
 
+    test(thisDentist) {
+        var dayOfWeek = ''
+        var start = ''
+        var end = ''
+        //Checks if which day of the week has been selected
+        for (var i = 0; i < Object.keys(thisDentist.openinghours).length; i++) {
+            if (Object.keys(thisDentist.openinghours)[i] === selectedDay) {
+                dayOfWeek = Object.values(thisDentist.openinghours)[i]
+            }
+        }
+
+        //checks if start begins with a single digit or two
+        if (dayOfWeek.charAt(1) === ':') {
+            start = dayOfWeek.substring(0, 4)
+            end = dayOfWeek.substring(5, 10)
+        }
+        else {
+            start = dayOfWeek.substring(0, 6)
+            end = dayOfWeek.substring(6, 11)
+        }
+        start = start.replace(':', '.')
+        end = end.replace(':', '.')
+
+        //Parses start and end to floats so we can do math on them
+        start = parseFloat(start)
+        end = parseFloat(end)
+
+        //Calculate the total amount of hours that the dentistry will be open for the selected day
+        var totalHours = (end - start) * 2
+        var halfHour = false
+
+        var tempArr = []
+        var selectedDentistry = thisDentist
+
+        /*Find existing appointment with selected date and time and compare with amount of dentists
+        If there exists a greater amount of dentists than amount of booked appointments,
+        create time slot and push it to array */
+
+        //Divides the openhours into timeslots
+        for (i = 0; i < totalHours; i++) {
+            if (halfHour) {
+                if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':30').length < selectedDentistry.dentists) {
+                    tempArr.push({ time_slot: + start + ':30' })
+                }
+                start++
+            } else {
+                if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':00').length < selectedDentistry.dentists) {
+                    tempArr.push({ time_slot: + start + ':00' })
+
+                }
+            }
+            halfHour = !halfHour
+        }
+        return tempArr
+    }
+
     handleDentistry() {
         if (selectedDentist === '') {
         } else {
 
             this.setState({ timeSlotArr: [] })
             var thisDentist = []
-            var dayOfWeek = ''
-            var start = ''
-            var end = ''
 
             //Checks of there is a dentistry within the array that matches the name of the selected dentistry, if true it copies the dentistry
             //over to thisDentist array
@@ -196,59 +254,7 @@ class SubmitForm extends Component {
                     })
                 }
             }
-            //Checks if which day of the week has been selected
-            for (i = 0; i < Object.keys(thisDentist.openinghours).length; i++) {
-                if (Object.keys(thisDentist.openinghours)[i] === selectedDay) {
-                    dayOfWeek = Object.values(thisDentist.openinghours)[i]
-                }
-            }
-            //checks if start begins with a single digit or two
-            if (dayOfWeek.charAt(1) === ':') {
-                start = dayOfWeek.substring(0, 4)
-                end = dayOfWeek.substring(5, 10)
-            }
-            else {
-                start = dayOfWeek.substring(0, 6)
-                end = dayOfWeek.substring(6, 11)
-            }
-            start = start.replace(':', '.')
-            end = end.replace(':', '.')
-
-            //Parses start and end to floats so we can do math on them
-            start = parseFloat(start)
-            end = parseFloat(end)
-
-            //Calculate the total amount of hours that the dentistry will be open for the selected day
-            var totalHours = (end - start) * 2
-            var halfHour = false
-
-            var tempArr = []
-            var selectedDentistry = dentistArr.find(element => element.id === selectedId)
-            
-            /*Find existing appointment with selected date and time and compare with amount of dentists
-            If there exists a greater amount of dentists than amount of booked appointments,
-            create time slot and push it to array */
-            
-            //Divides the openhours into timeslots
-            for (i = 0; i < totalHours; i++) {
-                if (halfHour) {
-                    if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':30').length < selectedDentistry.dentists){
-                        tempArr.push({ time_slot: + start  + ':30' })
-                    }
-                    start++
-                } else {
-                    if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':00').length < selectedDentistry.dentists){
-                        tempArr.push({ time_slot: + start + ':00' })
-
-                    }
-            
-                    
-                }
-                halfHour = !halfHour
-            }
-            //Assigned lunch break at middle of opening hours
-            //TODO: Make breaks not change when timeslots are filtered out
-            this.setState({ timeSlotArr: tempArr })
+            this.setState({ timeSlotArr: this.test(thisDentist) })
         }
     }
 
@@ -263,8 +269,8 @@ class SubmitForm extends Component {
     handleSubmit = (event) => {
         var issuance = new Date()
         issuance = issuance.getTime()
-        
-        
+
+
         var bookingRequest = {
 
             userid: userId,
@@ -378,7 +384,7 @@ class SubmitForm extends Component {
         return (
 
             <div id='position'>
-                <div><Calendar onChange={this.handleDateChange} Days={this.state.date} /></div>
+                <div><Calendar defaultActiveStartDate={new Date()}  minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <br />
                 {this.state.dentistry && <form onSubmit={this.handleSubmit}>
                     <label>Select a time: {this.state.timeSlot}</label><br />
