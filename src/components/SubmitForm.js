@@ -223,20 +223,31 @@ class SubmitForm extends Component {
             var halfHour = false
 
             var tempArr = []
+            var selectedDentistry = dentistArr.find(element => element.id === selectedId)
+            
+            /*Find existing appointment with selected date and time and compare with amount of dentists
+            If there exists a greater amount of dentists than amount of booked appointments,
+            create time slot and push it to array */
+            
             //Divides the openhours into timeslots
             for (i = 0; i < totalHours; i++) {
                 if (halfHour) {
-                    tempArr.push({ time_slot: + '' + start + '' + ':30' })
+                    if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':30').length < selectedDentistry.dentists){
+                        tempArr.push({ time_slot: + start  + ':30' })
+                    }
                     start++
                 } else {
-                    tempArr.push({ time_slot: + '' + start + '' + ':00' })
+                    if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':00').length < selectedDentistry.dentists){
+                        tempArr.push({ time_slot: + start + ':00' })
+
+                    }
+            
+                    
                 }
                 halfHour = !halfHour
             }
             //Assigned lunch break at middle of opening hours
-            tempArr.splice(tempArr.length / 2, 2)
-            //Assigned fika
-            tempArr.splice(tempArr.length - 4, 1)
+            //TODO: Make breaks not change when timeslots are filtered out
             this.setState({ timeSlotArr: tempArr })
         }
     }
