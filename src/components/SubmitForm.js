@@ -25,7 +25,7 @@ response.on('message', function (topic, message) {
         if (message.time === 'none') {
             alert("Could not book appointment, timeslot is already occupied")
         } else {
-            if(!alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)){
+            if (!alert("An appointment has been booked for" + ' ' + message.time + ' ' + "on" + ' ' + selectedDate)) {
                 window.location.reload();
             }
         }
@@ -70,25 +70,25 @@ class SubmitForm extends Component {
             }
 
             for (var i = 0; i < dentistArr.length; i++) {
-            if (this.test(dentistArr[i]).length > 0) {
-                var long = dentistArr[i].coordinate.longitude
-                var lat = dentistArr[i].coordinate.latitude
-                var temp =
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'name': dentistArr[i].name,
-                        'description':
-                            '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [long, lat]
+                if (this.getAppointments(dentistArr[i]).length > 0) {
+                    var long = dentistArr[i].coordinate.longitude
+                    var lat = dentistArr[i].coordinate.latitude
+                    var temp =
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'name': dentistArr[i].name,
+                            'description':
+                                '<strong>' + dentistArr[i].name + '</strong>' + '<p>Adress: ' + dentistArr[i].address + '</p>'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [long, lat]
+                        }
                     }
+                    tempA.data.features.push(temp)
                 }
-                tempA.data.features.push(temp)
             }
-        }
 
             map.on('load', function () {
                 map.loadImage(
@@ -96,18 +96,18 @@ class SubmitForm extends Component {
                     function (error, image) {
                         if (error) throw error;
                         map.addImage('marker', image);
-                
-                            map.addSource('point', tempA);
-                            map.addLayer({
-                                'id': 'points',
-                                'type': 'symbol',
-                                'source': 'point',
-                                'layout': {
-                                    'icon-image': 'marker',
-                                    'icon-size': 0.07
-                                }
-                            });
-                        
+
+                        map.addSource('point', tempA);
+                        map.addLayer({
+                            'id': 'points',
+                            'type': 'symbol',
+                            'source': 'point',
+                            'layout': {
+                                'icon-image': 'marker',
+                                'icon-size': 0.07
+                            }
+                        });
+
                     }
                 );
 
@@ -176,7 +176,7 @@ class SubmitForm extends Component {
         this.handleDentistry()
     }
 
-    test(thisDentist) {
+    getAppointments(thisDentist) {
         var dayOfWeek = ''
         var start = ''
         var end = ''
@@ -254,7 +254,7 @@ class SubmitForm extends Component {
                     })
                 }
             }
-            this.setState({ timeSlotArr: this.test(thisDentist) })
+            this.setState({ timeSlotArr: this.getAppointments(thisDentist) })
         }
     }
 
@@ -384,7 +384,7 @@ class SubmitForm extends Component {
         return (
 
             <div id='position'>
-                <div><Calendar defaultActiveStartDate={new Date()}  minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
+                <div><Calendar defaultActiveStartDate={new Date()} minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <br />
                 {this.state.dentistry && <form onSubmit={this.handleSubmit}>
                     <label>Select a time: {this.state.timeSlot}</label><br />
