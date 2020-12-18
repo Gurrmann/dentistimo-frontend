@@ -1,11 +1,9 @@
 import React, { useState, Fragment } from 'react'
 import SubmitForm from './SubmitForm.js'
-import Calendar from './Calendar.js'
-import DenistryMap from './DenistryMap.js'
 import '../css/FrontPage.css'
 import SidePanel from './SidePanel.js'
 var mqtt = require('mqtt')
-var client = mqtt.connect('ws://test.mosquitto.org:8080')
+var client = mqtt.connect('ws://broker.hivemq.com:8000/mqtt')
 
 client.on('connect', function () {
   client.subscribe('dentistries')
