@@ -1,4 +1,3 @@
-
 .background {
   background-color: #404040;
 }
@@ -41,3 +40,8 @@
 }
 
 body {background-color: #292a35;}
+
+body {
+  overflow: hidden; /* Hide scrollbars */
+}
+
