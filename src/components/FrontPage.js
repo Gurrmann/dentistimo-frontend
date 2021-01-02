@@ -3,7 +3,7 @@ import SubmitForm from './SubmitForm.js'
 import '../css/FrontPage.css'
 import SidePanel from './SidePanel.js'
 var mqtt = require('mqtt')
-var client = mqtt.connect('ws://test.mosquitto.org:8081')
+var client = mqtt.connect('ws://broker.hivemq.com:8000/mqtt')
 
 client.on('connect', function () {
   client.subscribe('dentistries')
