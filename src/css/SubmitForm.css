@@ -49,6 +49,7 @@ width: 200px
   border-radius: 20px 20px 20px 20px;
 }
 
+
 .calendarContainer {
   position: absolute;
   top: 22%;
@@ -76,18 +77,6 @@ width: 200px
 
 }
 
-.sidebarStyle {
-  display: inline-block;
-  position: absolute;
-  top: 21.5%;
-  left: 39.5%;
-  margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
-  z-index: 1 !important;
-  padding: 3px;
-  font-weight: bold;
-}
 .submission-map-container {
   display: flex;
   flex-direction: row;
