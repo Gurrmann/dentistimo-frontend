@@ -217,12 +217,16 @@ class SubmitForm extends Component {
         //Divides the openhours into timeslots
         for (i = 0; i < totalHours; i++) {
             if (halfHour) {
-                if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':30').length < selectedDentistry.dentists) {
+                if (start === 12) {
+                }
+                else if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':30').length < selectedDentistry.dentists) {
                     tempArr.push({ time_slot: + start + ':30' })
                 }
                 start++
             } else {
-                if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':00').length < selectedDentistry.dentists) {
+                if (start === 12 || start === 9) {
+                }
+                else if (selectedDentistry.appointments.filter(element => element.timeSlot === selectedDate + ' ' + start + ':00').length < selectedDentistry.dentists) {
                     tempArr.push({ time_slot: + start + ':00' })
 
                 }
