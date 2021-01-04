@@ -45,6 +45,29 @@ form {
     bottom: 25%;
     border-style: solid;
   }
+
+.calendarContainer {
+    position: absolute;
+    top: 22%;
+    right: 40%;
+    left: 10%;
+    bottom: 25%;
+  }
+
+.formContainer {
+    position: absolute;
+    top: 70%;
+    right: 40%;
+    left: 10%;
+    bottom: 25%;
+  }
+  .hoursContainer {
+    position: absolute;
+    top: 53%;
+    right: 40%;
+    left: 10%;
+    bottom: 25%;
+  }
   
   .sidebarStyle {
     display: inline-block;

@@ -384,9 +384,9 @@ class SubmitForm extends Component {
         return (
 
             <div id='position'>
-                <div><Calendar defaultActiveStartDate={new Date()} minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
+                <div className="calendarContainer"><Calendar defaultActiveStartDate={new Date()} minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
                 <br />
-                {this.state.dentistry && <form onSubmit={this.handleSubmit}>
+                {this.state.dentistry && <form className="formContainer" onSubmit={this.handleSubmit}>
                     <label>Select a time: {this.state.timeSlot}</label><br />
                     <select value={this.state.timeSlot} onChange={this.handleTimeChange}>
                         <option default disabled>Select a time slot</option>
@@ -402,7 +402,7 @@ class SubmitForm extends Component {
                     <div ref={el => this.mapContainer = el} className='mapContainer' />
                 </div>
                 <br />
-                {this.state.dentistry && <div>
+                {this.state.dentistry && <div className="hoursContainer">
                     {this.state.dentistry && <strong className='displayCenter' >{this.state.dentistry}</strong>}
                     <br />
                     {this.state.dentistry && <label className='displayLeft' >Monday: {this.state.selectedMonday}</label>}
