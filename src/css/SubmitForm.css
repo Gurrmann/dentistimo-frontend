@@ -38,14 +38,15 @@ text-align: left;
 width: 200px
 }
 .mapContainer {
-  position: absolute;
+  position: fixed;
   top: 22%;
-  right: 10%;
-  left: 40%;
-  bottom: 25%;
+  left: 50%;
+  width: 400px;
+  bottom: 30%;
   border-style: solid;
   border-radius: 0px 20px 20px 20px;
 }
+
 
 .calendarContainer {
   position: absolute;
@@ -76,18 +77,6 @@ width: 200px
 
 }
 
-.sidebarStyle {
-  display: inline-block;
-  position: absolute;
-  top: 21.5%;
-  left: 39.5%;
-  margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
-  z-index: 1 !important;
-  padding: 3px;
-  font-weight: bold;
-}
 .submission-map-container {
   display: flex;
   flex-direction: row;
