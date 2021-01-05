@@ -9,5 +9,5 @@ Step 3. When everything has finished installing, you can run the component by ty
 
 Note. In order to run this component, node.js must be installed.
 
-##Purpouse 
+## Purpouse 
 This component acts as the UI for the system, we are using React to create the GUI as well as mapbox to create the map.
