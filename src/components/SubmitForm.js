@@ -16,8 +16,10 @@ var selectedDentist = ''     //Name of selected dentist
 var selectedId = ''          //Id of the selected dentistry
 var count = 1
 
+var options = { qos: 2 }
+
 response.on('connect', function () {
-    response.subscribe(userId.toString())
+    response.subscribe(userId.toString(), options)
 })
 
 response.on('message', function (topic, message) {
