@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../css/SubmitForm.css';
 import mapboxgl from 'mapbox-gl';
+
 var mqtt = require('mqtt')
 var response = mqtt.connect('ws://broker.hivemq.com:8000/mqtt')
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvd2VpMDkyMiIsImEiOiJja2hydGI1dG8yZzZyMnJwZXVmYmN5bDRjIn0.OpbuLDJ2ptHBjK1JBaE3pg';
@@ -92,7 +93,7 @@ class SubmitForm extends Component {
 
             map.on('load', function () {
                 map.loadImage(
-                    'https://cdn2.iconfinder.com/data/icons/web-and-ecommerce/24/GPS_Location-512.png',
+                    'dentistryMarker.png',
                     function (error, image) {
                         if (error) throw error;
                         map.addImage('marker', image);
@@ -388,9 +389,9 @@ class SubmitForm extends Component {
         return (
 
             <div id='position'>
-                <div><Calendar defaultActiveStartDate={new Date()} minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} /></div>
+                <div className="calendarContainer"><Calendar defaultActiveStartDate={new Date()} minDate={new Date()} onChange={this.handleDateChange} Days={this.state.date} />
                 <br />
-                {this.state.dentistry && <form onSubmit={this.handleSubmit}>
+                {this.state.dentistry && <form className="formContainer" onSubmit={this.handleSubmit}>
                     <label>Select a time: {this.state.timeSlot}</label><br />
                     <select value={this.state.timeSlot} onChange={this.handleTimeChange}>
                         <option default disabled>Select a time slot</option>
@@ -398,15 +399,7 @@ class SubmitForm extends Component {
                     </select><br />
                     <input type="submit" value="Submit" disabled={!this.state.timeSlot} />
                 </form>}
-                <div className='map'>
-                    <div className='sidebarStyle'>
-                        <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}
-                        </div>
-                    </div>
-                    <div ref={el => this.mapContainer = el} className='mapContainer' />
-                </div>
-                <br />
-                {this.state.dentistry && <div>
+                {this.state.dentistry && <span className="hoursContainer">
                     {this.state.dentistry && <strong className='displayCenter' >{this.state.dentistry}</strong>}
                     <br />
                     {this.state.dentistry && <label className='displayLeft' >Monday: {this.state.selectedMonday}</label>}
@@ -418,7 +411,12 @@ class SubmitForm extends Component {
                     {this.state.dentistry && <label className='displayLeft' >Thursday: {this.state.selectedThursday}</label>}
                     <br />
                     {this.state.dentistry && <label className='displayLeft' >Friday: {this.state.selectedFriday}</label>}
-                </div>}
+                </span>}
+                </div>
+                <div>
+                    <div ref={el => this.mapContainer = el} className='mapContainer' />
+                </div>
+                <br />
             </div>
         )
     }

@@ -1,75 +1,98 @@
 .submitInput {
-    background-color: #dddddd;
-    align-items: right;
-    border: 0px;
-    font-family: monospace;
-    box-shadow: 2px 2px 1px #6d6d6d;
+  background-color: #dddddd;
+  align-items: right;
+  border: 0px;
+  font-family: monospace;
+  box-shadow: 2px 2px 1px #6d6d6d;
 }
 .submitInput:hover{
-    background-image: radial-gradient(#afd3df,#6bb9c7);
+  background-image: radial-gradient(#afd3df,#6bb9c7);
 }
 
 select {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 option {
-    background-color: white;
+  background-color: white;
 }
 label {
-    color: white;
-    margin-bottom: 5px;
+  color: white;
+  margin-bottom: 5px;
 }
 form {
-    color: white;
+  color: white;
 }
 .cal {
-    margin-bottom: 10px;
-    background-image: linear-gradient(#ffffff, #e0e1ff);
-    border: 2px;
-    border-style: solid;
+  margin-bottom: 10px;
+  background-image: linear-gradient(#ffffff, #e0e1ff);
+  border: 2px;
+  border-style: solid;
 }
 
 #textBlock {
-  color: white;
-  font-size: 18px;
-  margin: -1px;
-  padding: 10px;
-  text-align: left;
-  width: 200px
+color: white;
+font-size: 18px;
+margin: -1px;
+padding: 10px;
+text-align: left;
+width: 200px
 }
+
 .mapContainer {
-    position: absolute;
-    top: 22%;
-    right: 10%;
-    left: 40%;
-    bottom: 25%;
-    border-style: solid;
-  }
-  
-  .sidebarStyle {
-    display: inline-block;
-    position: absolute;
-    top: 21.5%;
-    left: 39.5%;
-    margin: 12px;
-    background-color: #404040;
-    color: #ffffff;
-    z-index: 1 !important;
-    padding: 3px;
-    font-weight: bold;
-  }
-  .submission-map-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 12%;
-    margin-right: 12%;
-  }
-  .displayCenter {
-    font-size: 18px;
-    text-align: center;
-  }
-  .displayLeft {
-    font-size: 18px;
-  }
-  
+  position: fixed;
+  top: 22%;
+  right: 10%;
+  left: 40%;
+  bottom: 25%;
+  margin-left: 100px;
+  border-style: solid;
+  border-radius: 20px 20px 20px 20px;
+}
+
+
+.calendarContainer {
+  position: absolute;
+  top: 22%;
+  right: 40%;
+  left: 10%;
+  bottom: 25%;
+}
+
+.formContainer {
+  background: #404040;
+  position: fixed;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  height: 250px;
+  width: 340px;
+  border-radius: 20px 20px 20px 20px;
+}
+.hoursContainer {
+  position: fixed;
+  padding-top: 10px;
+  padding-left: 10px;
+  margin-top: 80px;
+  width: 350px;
+
+}
+
+.submission-map-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 12%;
+  margin-right: 12%;
+}
+.displayCenter {
+  color: #ffffff;
+  font-size: 22px;
+  text-align: center;
+}
+.displayLeft {
+  font-size: 18px;
+}
+
+#spanController {
+  margin-top: 20px;
+}
